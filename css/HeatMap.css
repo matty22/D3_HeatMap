@@ -1,5 +1,13 @@
 /* HeatMap.css */
 
+#header{
+  text-align: center;
+}
+
 .chartBackground {
   background-color: gray;
+}
+
+.bar {
+  fill: #000000;
 }
