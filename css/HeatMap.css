@@ -8,6 +8,6 @@
   background-color: gray;
 }
 
-.bar {
-  fill: #000000;
+.box:hover {
+  stroke: black;
 }
