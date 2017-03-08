@@ -8,24 +8,44 @@ xhr.onload = function() {
     console.log(dataset);
 
     // Instantiate variables
-    var chartWidth = 789;
-    var chartHeight = 420;
+    var chartWidth = 819;
+    var chartHeight = 450;
+    var chartPadding = 30;
+
+    // Set up xScale
+    var xScale = d3.scaleLinear()
+                   .domain([1753, d3.max(dataset.monthlyVariance, function(d) { return d.year; })])
+                   .range([chartPadding, chartWidth - chartPadding]);
     
+    // Set up yScale
+    var yScale = d3.scaleLinear()
+                   .domain([1, 12])
+                   .range([chartPadding, chartHeight - chartPadding]);
+    
+     // Set up xAxis
+    var xAxis = d3.axisTop(xScale);
+
+    // Set up yAxis
+    var yAxis = d3.axisLeft(yScale);
+
+    // Setup tooltip div
+    var tooltip = d3.select('body')
+                    .append('div')
+                    .attr('class', 'tooltipStyles')
 
     // Append svg to page
     var svg = d3.select('#chartDiv')
                 .append('svg')
                 .attr('width', chartWidth)
-                .attr('height', chartHeight)
-                .attr('class', 'chartBackground')
+                .attr('height', chartHeight);
 
     // Append rects to svg
     svg.selectAll('rect')
        .data(dataset.monthlyVariance)
        .enter()
        .append('rect')
-       .attr('x', function(d, i) { return (d.year - 1753) * 3})
-       .attr('y', function(d) { return d.month * 35 - 35; })
+       .attr('x', function(d) { return xScale(d.year)})
+       .attr('y', function(d) { return yScale(d.month)})
        .attr('width', '3px')
        .attr('height', '35px')
        .attr('fill', function(d) {
@@ -43,18 +63,37 @@ xhr.onload = function() {
            return '#ffffb1';
          } else if (d.variance > 0.5 && d.variance <= 1.0) {
            // Temps between 0.5 and 1 degree above average are colored darker yellow
-           return '#ffff65';
+           return '#ffff19';
          } else if (d.variance > 1.0 && d.variance < 3.0) {
            // Temps between 1 and 3 degrees above average are colored pale orange
            return '#ffac14';
          } else if (d.variance > 3.0) {
-           // Temps above 3 degrees above normal are colored dark orange
+           // Temps above 3 degrees above average are colored dark orange
            return '#c78000';
          }
         })
        .attr('class', 'box')
-       .append('title')
-       .text(function(d) { return d.month + " " + d.year });
+       .on('mouseover', function(d) {
+                       tooltip.transition().style('display', 'block')
+                       tooltip.html(d.month + ", " + d.year + "<br>Temp variation: " + d.variance )
+                              .style('left', '1000px')
+                              .style('top', '500px')
+                              .style('z-index', 2)
+                    })
+                    .on('mouseout', function(d) { 
+                        tooltip.transition().style('display', 'none')
+                    })
+
+
+      //Append x axis to svg
+      svg.append('g')
+          .attr('transform', 'translate(0,' + (chartPadding) + ')')
+          .call(xAxis);
+
+      // Append y axis to svg
+      svg.append('g')
+          .attr('transform', 'translate(' + chartPadding + ',15)')
+          .call(yAxis);
 
   }
   else {

@@ -4,10 +4,60 @@
   text-align: center;
 }
 
-.chartBackground {
-  background-color: gray;
-}
-
 .box:hover {
   stroke: black;
+}
+
+.tooltipStyles {
+  position: fixed;
+  display: none;
+  background-color: #000000;
+  color: #ffffff;
+  font-size: 12px;
+  text-align: center;
+  padding: 5px 10px;
+  opacity: 0.8;
+}
+
+#legendTable {
+  margin-left: 30px;
+}
+
+.legendSquare {
+  width: 40px;
+  height: 30px;
+}
+
+#cell1 {
+  background-color: #00bfff;
+}
+
+
+#cell2 {
+  background-color: #abfcab;
+}
+
+
+#cell3 {
+  background-color: #61f961;
+}
+
+
+#cell4 {
+  background-color: #ffffb1;
+}
+
+
+#cell5 {
+  background-color: #ffff19;
+}
+
+
+#cell6 {
+  background-color: #ffac14;
+}
+
+
+#cell7 {
+  background-color: #c78000;
 }
